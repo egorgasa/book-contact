@@ -1,0 +1,19 @@
+{
+  "contacts": [
+    {
+      "name": "Egor",
+      "number": "+375291063772",
+      "address": "Mogilev,Smindta 12,BLR"
+    },
+    {
+      "name": "Vadim",
+      "number": "+14233290293",
+      "address": "Tennessee, USA"
+    },
+    {
+      "name": "Olga",
+      "number": "+3752911476375",
+      "address": "Kiev, UK"
+    }
+  ]
+}
