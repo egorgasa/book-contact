@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class SortAndSearchContacts extends Component {
+export default class SortAndSearchContacts extends Component {
 
     filterUpdate() {
         const searchValue = this.searchValue.value;
@@ -21,17 +21,17 @@ class SortAndSearchContacts extends Component {
                     <input
                         type="search"
                         placeholder="search"
-                        ref={(value) => {
-                            this.searchValue = value
+                        ref={(TextSearch) => {
+                            this.searchValue = TextSearch
                         }}
                         onChange={this.filterUpdate.bind(this)}
                     />
                 </div>
                 <div>
                     <label>Sort:</label>
-                    <select onChange={this.sortUpdate.bind(this)} defaultValue={this.props.sortContactValue}>
-                        <option value="ascending">Ascending</option>
-                        <option value="descending">Descending</option>
+                    <select onChange={this.sortUpdate.bind(this)} defaultValue={this.props.value}>
+                        <option value={true}>Ascending</option>
+                        <option value={false}>Descending</option>
                     </select>
                 </div>
             </React.Fragment>
@@ -39,4 +39,3 @@ class SortAndSearchContacts extends Component {
     }
 }
 
-export default SortAndSearchContacts;

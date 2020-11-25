@@ -8,7 +8,6 @@ export default class Header extends Component {
     render() {
         return (
             <div className='header'>
-
                 <h1>Phone Book</h1>
                 <div>
                     <SortAndSearchContacts

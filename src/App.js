@@ -11,8 +11,6 @@ class App extends Component {
 
         this.state = {
             contacts: [],
-            filterText: '',
-            sortContactValue: 'ascending',
             loading: true,
         }
     }
@@ -21,10 +19,10 @@ class App extends Component {
         fetch(' http://localhost:3000/contacts')
             .then(res => res.json())
             .then(
-                (result) => {
+                (contacts) => {
 
                     this.setState({
-                        contacts: result,
+                        contacts: contacts,
                         loading: false
                     });
 
@@ -33,26 +31,14 @@ class App extends Component {
                     this.setState({
                         contacts: ['error loading contacts'],
                         loading: false,
-                        error
+
                     });
                 }
             )
     }
 
-    filterUpdate(value) {
-        this.setState({
-            filterText: value
-        });
-    }
-
-    sortContacts = (value) => {
-        this.setState({
-            sortContactValue: value
-        });
-    };
-
     removeContact = contactToBeRemoved => {
-        let filteredContacts = this.state.contacts.filter( (contact) =>{
+        let filteredContacts = this.state.contacts.filter((contact) => {
             return contact.name !== contactToBeRemoved;
         });
 
@@ -61,7 +47,6 @@ class App extends Component {
         });
     };
 
-
     render() {
 
         return (
@@ -69,12 +54,8 @@ class App extends Component {
                 <React.Fragment>
                     <Route exact path='/' render={() => (
                         <ContactsContainer
-                            filterUpdate={this.filterUpdate.bind(this)}
-                            sortContacts={this.sortContacts}
-                            contacts={this.state.contacts}
-                            filterText={this.state.filterText}
-                            sortContactValue={this.state.sortContactValue}
                             removeContact={this.removeContact}
+                            contacts={this.state.contacts}
                         />)}/>
                     <Route exact path='/add/' render={({history}) => (
                         <AddContact addContact={(contact) => {

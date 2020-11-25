@@ -1,62 +1,88 @@
-import React from 'react';
-
-import ContactsList from './ContactsList'
+import React, {Component} from 'react';
 import Header from "./Header";
+import ContactsList from './ContactsList'
 
-export default (props) => {
-
-
-    const sortByName = (a, b) => {
-        if (props.sortContactValue === 'ascending') {
-
-            if (a.name < b.name) {
-                return -1;
-            }
-            if (a.name > b.name) {
-                return 1;
-            }
-        } else {
-
-            if (a.name > b.name) {
-                return -1;
-            }
-            if (a.name < b.name) {
-                return 1;
-            }
+export default class extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            filterText: '',
+            sortContactValue: 'true',
         }
-        return 0;
     }
 
-    const contactList = props.contacts
-        .filter(contact => {
-            return contact.name.toLowerCase().indexOf(props.filterText.toLowerCase()) >= 0;
-        })
-        .sort(sortByName)
-        .map((contact, index) => {
-            return (
-                <li key={index}>
-                    <h4>{contact.name}</h4>
-                    <p>{contact.number}</p>
-                    <address>{contact.address}</address>
-                    <button onClick={function () {
-                        props.removeContact(contact.name)
-                    }}>Remove contact X
-                    </button>
-                </li>
-            )
-        })
+    filterUpdate(SearchValue) {
+        this.setState({
+            filterText: SearchValue
+        });
+    }
 
-    const contacts = props.loading ? 'loading...' : contactList;
+    sortContacts = (SortValue) => {
+        this.setState({
+            sortContactValue: SortValue
+        });
+    };
 
-    return (
-        <React.Fragment>
-            <Header
-                title={props.title}
-                filterUpdate={props.filterUpdate}
-                sortContactValue={props.sortContactValue}
-                sortContacts={props.sortContacts}
-            />
-            <ContactsList contactsSorted={contacts}/>
-        </React.Fragment>
-    );
+
+    removeContact = contactToRemove => {
+        let filteredContacts = this.state.contacts.filter((contact) => {
+            return contact.name !== contactToRemove;
+        });
+
+        this.setState({
+            contacts: filteredContacts
+        });
+    };
+
+    render() {
+        const sortByName = (a, b) => {
+            if (this.state.sortContactValue === "true") {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                if (a.name > b.name) {
+                    return 1;
+                }
+            } else {
+
+                if (a.name > b.name) {
+                    return -1;
+                }
+                if (a.name < b.name) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        const contactList = this.props.contacts
+            .filter(contact => {
+                return contact.name.toLowerCase().includes(this.state.filterText.toLowerCase());
+            })
+            .sort(sortByName)
+            .map((contact, index) => {
+                return (
+                    <li key={index}>
+                        <h4>{contact.name}</h4>
+                        <p>{contact.phone_number}</p>
+                        <address>{contact.address}</address>
+                        <button onClick={() => {
+                            this.props.removeContact(contact.name)
+                        }}>Remove contact X
+                        </button>
+                    </li>
+                )
+            })
+
+        const contacts = this.props.loading ? 'loading...' : contactList;
+        return (
+            <div>
+                <Header
+                    filterUpdate={this.filterUpdate.bind(this)}
+                    sortContactValue={this.state.sortContactValue}
+                    sortContacts={this.sortContacts}
+                />
+                <ContactsList contactsSorted={contacts}/>
+            </div>)
+    }
 }
